@@ -6,12 +6,15 @@
 
 namespace bb::avm2 {
 
-TEST(AvmFirstFoldTests, MatchesReferenceForSparseAndEmptySources)
+class AvmFirstFoldTests : public ::testing::TestWithParam<bool> {};
+
+TEST_P(AvmFirstFoldTests, MatchesReferenceForSparseAndEmptySources)
 {
     using Polynomial = AvmFlavor::Polynomial;
     using FF = AvmFlavor::FF;
     constexpr size_t circuit_size = 64;
     auto full = std::make_unique<AvmFlavor::ProverPolynomials>();
+    full->memory_optimizations = GetParam();
     auto sources = full->get_all();
     const std::array<std::pair<size_t, size_t>, 8> ranges{
         { { 0, 0 }, { 7, 0 }, { 0, 1 }, { 1, 1 }, { 0, 9 }, { 1, 8 }, { 2, 7 }, { 7, 9 } }
@@ -33,6 +36,11 @@ TEST(AvmFirstFoldTests, MatchesReferenceForSparseAndEmptySources)
             auto& destination = destinations[j];
             const size_t end = (source.end_index() + 1) / 2;
             ASSERT_EQ(destination.size(), end);
+            if (!GetParam() || source.is_empty() || source.start_index() >= 2) {
+                for (size_t i = 0; i < end; ++i) {
+                    EXPECT_EQ(destination[i], FF::zero());
+                }
+            }
             fold_stride2(source, destination, 0, end, challenge);
             for (size_t i = 0; i < end; ++i) {
                 const FF expected = source[2 * i] + challenge * (source[2 * i + 1] - source[2 * i]);
@@ -41,5 +49,7 @@ TEST(AvmFirstFoldTests, MatchesReferenceForSparseAndEmptySources)
         }
     }
 }
+
+INSTANTIATE_TEST_SUITE_P(MemoryOptimizations, AvmFirstFoldTests, ::testing::Bool());
 
 } // namespace bb::avm2

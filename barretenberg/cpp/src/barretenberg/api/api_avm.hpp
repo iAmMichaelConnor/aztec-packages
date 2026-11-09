@@ -16,8 +16,9 @@ struct AvmProveResult {
 /**
  * @brief Prove an AVM transaction from serialized inputs (msgpack bytes).
  * Callers that need to verify the proof should call avm_verify_from_bytes separately.
+ * @param memory_optimizations Enables experimental first-fold and PCS memory optimizations.
  */
-AvmProveResult avm_prove_from_bytes(std::vector<uint8_t> inputs);
+AvmProveResult avm_prove_from_bytes(std::vector<uint8_t> inputs, bool memory_optimizations = false);
 
 /**
  * @brief Verify an AVM proof from serialized data.
@@ -44,8 +45,11 @@ extern const bool avm_enabled;
  *
  * @param inputs_path Path to the file containing the serialised avm public inputs and hints
  * @param output_path Path (directory) to write the output proof
+ * @param memory_optimizations Enables experimental first-fold and PCS memory optimizations.
  */
-void avm_prove(const std::filesystem::path& inputs_path, const std::filesystem::path& output_path);
+void avm_prove(const std::filesystem::path& inputs_path,
+               const std::filesystem::path& output_path,
+               bool memory_optimizations = false);
 
 void avm_check_circuit(const std::filesystem::path& inputs_path);
 

@@ -9,7 +9,8 @@ namespace bb {
 const bool avm_enabled = false;
 
 void avm_prove([[maybe_unused]] const std::filesystem::path& inputs_path,
-               [[maybe_unused]] const std::filesystem::path& output_path)
+               [[maybe_unused]] const std::filesystem::path& output_path,
+               [[maybe_unused]] bool memory_optimizations)
 {
     throw_or_abort("AVM is not supported in this build. Use the 'bb-avm' binary with full AVM support.");
 }
@@ -35,7 +36,8 @@ void avm_write_verification_key([[maybe_unused]] const std::filesystem::path& ou
     throw_or_abort("AVM is not supported in this build. Use the 'bb-avm' binary with full AVM support.");
 }
 
-AvmProveResult avm_prove_from_bytes([[maybe_unused]] std::vector<uint8_t> inputs)
+AvmProveResult avm_prove_from_bytes([[maybe_unused]] std::vector<uint8_t> inputs,
+                                    [[maybe_unused]] bool memory_optimizations)
 {
     throw_or_abort("AVM is not supported in this build. Use the 'bb-avm' binary with full AVM support.");
 }

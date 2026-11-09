@@ -627,6 +627,12 @@ int parse_and_run_cli_command(int argc, char* argv[])
     std::filesystem::path avm_prove_output_path{ "./proofs" };
     add_output_path_option(avm_prove_command, avm_prove_output_path);
     add_avm_inputs_option(avm_prove_command);
+    bool avm_memory_optimizations = false;
+    avm_prove_command
+        ->add_flag("--avm-memory-optimizations",
+                   avm_memory_optimizations,
+                   "Enable experimental first-fold and PCS memory optimizations.")
+        ->envname("BB_AVM_MEMORY_OPTIMIZATIONS");
 
     /***************************************************************************************************************
      * Subcommand: avm_write_vk
@@ -992,7 +998,7 @@ int parse_and_run_cli_command(int argc, char* argv[])
         // AVM - functions will throw at runtime if not supported (via stub module)
         else if (avm_prove_command->parsed()) {
             // This outputs both files: proof and vk, under the given directory.
-            avm_prove(avm_inputs_path, avm_prove_output_path);
+            avm_prove(avm_inputs_path, avm_prove_output_path, avm_memory_optimizations);
         } else if (avm_check_circuit_command->parsed()) {
             avm_check_circuit(avm_inputs_path);
         } else if (avm_verify_command->parsed()) {

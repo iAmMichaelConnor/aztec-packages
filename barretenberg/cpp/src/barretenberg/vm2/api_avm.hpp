@@ -15,7 +15,9 @@ extern const bool avm_enabled;
  * @param inputs_path Path to the file containing the serialised avm public inputs and hints
  * @param output_path Path (directory) to write the output proof
  */
-void avm_prove(const std::filesystem::path& inputs_path, const std::filesystem::path& output_path);
+void avm_prove(const std::filesystem::path& inputs_path,
+               const std::filesystem::path& output_path,
+               bool memory_optimizations);
 
 void avm_check_circuit(const std::filesystem::path& inputs_path);
 

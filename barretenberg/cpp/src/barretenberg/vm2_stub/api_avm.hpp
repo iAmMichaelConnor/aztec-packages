@@ -9,7 +9,9 @@ extern const bool avm_enabled;
 /**
  * @brief Stub - throws runtime error if called
  */
-void avm_prove(const std::filesystem::path& inputs_path, const std::filesystem::path& output_path);
+void avm_prove(const std::filesystem::path& inputs_path,
+               const std::filesystem::path& output_path,
+               bool memory_optimizations);
 
 /**
  * @brief Stub - throws runtime error if called

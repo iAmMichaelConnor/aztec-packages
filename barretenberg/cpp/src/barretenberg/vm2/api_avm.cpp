@@ -28,9 +28,11 @@ void print_avm_stats()
 
 } // namespace
 
-void avm_prove(const std::filesystem::path& inputs_path, const std::filesystem::path& output_path)
+void avm_prove(const std::filesystem::path& inputs_path,
+               const std::filesystem::path& output_path,
+               bool memory_optimizations)
 {
-    avm2::AvmAPI avm;
+    avm2::AvmAPI avm(memory_optimizations);
     auto inputs = avm2::AvmAPI::ProvingInputs::from(read_file(inputs_path));
     auto proof = avm.prove(inputs);
 
@@ -95,9 +97,9 @@ void avm_write_verification_key(const std::filesystem::path& output_path)
     write_file(output_path / "vk", vk);
 }
 
-AvmProveResult avm_prove_from_bytes(std::vector<uint8_t> inputs)
+AvmProveResult avm_prove_from_bytes(std::vector<uint8_t> inputs, bool memory_optimizations)
 {
-    avm2::AvmAPI avm;
+    avm2::AvmAPI avm(memory_optimizations);
     auto proving_inputs = avm2::AvmAPI::ProvingInputs::from(inputs);
     auto proof = avm.prove(proving_inputs);
 
